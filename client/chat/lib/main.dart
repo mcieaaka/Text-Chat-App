@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+// import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,7 +31,7 @@ class BodyWidget extends StatefulWidget {
 }
 
 class BodyWidgetState extends State<BodyWidget> {
-  String serverResponse = 'Server response';
+  String serverResponse = 'Click here to Login/ SignUp using Google';
 
   @override
   Widget build(BuildContext context) {
@@ -43,15 +44,15 @@ class BodyWidgetState extends State<BodyWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton(
-                child: Text('Send request to server'),
-                onPressed: () {
-                  _makeGetRequest();
-                },
-              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(serverResponse),
+              ),
+              ElevatedButton(
+                child: Text('Login'),
+                onPressed: () {
+                  _makeGetRequest();
+                },
               ),
             ],
           ),
@@ -61,16 +62,13 @@ class BodyWidgetState extends State<BodyWidget> {
   }
 
   _makeGetRequest() async {
-    final url = Uri.parse(_localhost());
-    Response response = await get(url);
-    setState(() {
-      serverResponse = response.body;
-    });
+    String url = _localhost();
+    launch(url);
   }
 
   String _localhost() {
     if (Platform.isAndroid)
-      return 'http://10.0.2.2:3000';
+      return 'http://10.0.2.2:3000/login';
     else // for iOS simulator
       return 'http://localhost:3000';
   }
